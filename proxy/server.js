@@ -1,8 +1,8 @@
-const path = require('path');
-const { fileURLToPath } = require('url');
-const express = require('express');
-const fetch = require('node-fetch');
-const cors = require('cors');
+import path from 'path';
+import { fileURLToPath } from 'url';
+import express from 'express';
+import fetch from 'node-fetch';
+import cors from 'cors';
 
 
 const __filename = fileURLToPath(import.meta.url);
