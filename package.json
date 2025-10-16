@@ -4,10 +4,10 @@
   "description": "Unified root package.json for n8n project",
   "main": "server.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "install-all": "npm install --prefix ./Agent && npm install --prefix ./frontend && npm install --prefix ./proxy"
-  },
+    "start": "node proxy/server.js",
+    "build": "cd frontend && npm install && npm run build",
+    "heroku-postbuild": "npm run build"
+      },
   "author": "pushparani",
   "license": "MIT",
   "dependencies": {
