@@ -35,10 +35,23 @@ const buildPath = path.join(__dirname, "../frontend/build");
 app.use(express.static(buildPath));
 
 // Support React Router for all frontend routes
+// Root route
 app.get("/", (req, res) => {
-  res.sendFile(path.join(buildPath, "index.html"));
+  // Check if frontend exists; if not, show a friendly backend message
+  const indexPath = path.join(buildPath, "index.html");
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      res.send("🔥 Backend is live — frontend coming soon!");
+    }
+  });
 });
 
 // ---------- Start server ----------
-const PORT = process.env.PORT || 3000;
-app.listen(3000, () => console.log("🔥 Server running on port 3000"));
+// Catch-all for unknown routes
+app.use((req, res) => {
+  res.status(404).send("⚡ Oops! Page not found, but backend is running.");
+});
+
+app.listen(3000, () => {
+  console.log("🔥 Server running on port 3000");
+});
