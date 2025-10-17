@@ -43,7 +43,7 @@ app.get("/", (req, res) => {
     if (err) {
       res.send("🔥 Backend is live — frontend coming soon!");
     }
-  });
+  }); HEAD
 });
 
 // ---------- Start server ----------
@@ -56,3 +56,14 @@ app.listen(3000, () => {
   console.log("🔥 Server running on port 3000");
 });
 
+
+
+// ---------- Start server ----------
+// Catch-all for unknown routes
+app.use((req, res) => {
+  res.status(404).send("⚡ Oops! Page not found, but backend is running.");
+});
+
+app.listen(3000, () => {
+  console.log("🔥 Server running on port 3000");
+});
