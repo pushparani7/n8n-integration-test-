@@ -12,6 +12,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
+// ---------- API route ----------
+
 app.post("/api/webhook-test", async (req, res) => {
   console.log("Data received:", req.body);
   
@@ -23,47 +26,35 @@ app.post("/api/webhook-test", async (req, res) => {
     });
 
     const data = await response.json();
-    res.json(data);
+    return res.json(data);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
 
-// serve frontend build
+// ---------- Serve React frontend ----------
 
 const buildPath = path.join(__dirname, "../frontend/build");
 app.use(express.static(buildPath));
 
 // Support React Router for all frontend routes
-// Root route
+
 app.get("/", (req, res) => {
   // Check if frontend exists; if not, show a friendly backend message
   const indexPath = path.join(buildPath, "index.html");
   res.sendFile(indexPath, (err) => {
     if (err) {
-      res.send("🔥 Backend is live — frontend coming soon!");
+      // Only send this if headers are not already sent
+      if (!res.headersSent) {
+       res.send("🔥 Backend is live — frontend coming soon!");
+      }  
     }
-  }); HEAD
+  }); 
 });
 
 // ---------- Start server ----------
-// Catch-all for unknown routes
-app.use((req, res) => {
-  res.status(404).send("⚡ Oops! Page not found, but backend is running.");
-});
 
-app.listen(3000, () => {
-  console.log("🔥 Server running on port 3000");
-});
-
-
-
-// ---------- Start server ----------
-// Catch-all for unknown routes
-app.use((req, res) => {
-  res.status(404).send("⚡ Oops! Page not found, but backend is running.");
-});
-
+const PORT = process.env.PORT || 3000;
 app.listen(3000, () => {
   console.log("🔥 Server running on port 3000");
 });
